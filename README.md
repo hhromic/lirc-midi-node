@@ -24,7 +24,7 @@ $ node lircmidi.js <lircdSocketPath> <midiOutputPort>
 * ```lircdSocketPath``` is the path to the UNIX socket that LIRCd is writing to.
 * ```midiOutputPort``` is the MIDI output port index to use for MIDI messages output.
 
-The actual LIRC remote/buttons to MIDI messages mappings are configured in the ```mappings.js``` module file. The contents for this file is very simple:
+The actual LIRC remote/buttons to MIDI messages mappings are configured in the ```mappings.js``` module file. The content for this file is very simple:
 
 ```javascript
 module.exports = {
