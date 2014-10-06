@@ -1,4 +1,4 @@
-// LIRC remote/button to MIDI messages mappings
+// LIRC remote/buttons to MIDI messages mappings
 module.exports = {
   'WDTV_Live_Remote': {
     'KEY_LEFT': [0x90, 0x3C, 0x7F],

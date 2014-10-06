@@ -9,7 +9,7 @@
 var net = require('net');
 var midi = require('midi');
 
-// LIRC remote/button to MIDI messages mappings
+// LIRC remote/buttons to MIDI messages mappings
 var mappings = require('./mappings');
 
 // Parse program arguments
