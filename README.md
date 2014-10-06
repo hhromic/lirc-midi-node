@@ -15,7 +15,7 @@ npm install midi
 Usage
 -----
 
-This simple program maps LIRC remote/buttons into MIDI messages that are later sent to any ALSA-compatible MIDI output port. The program accepts two arguments:
+This simple program maps LIRC remote/buttons into MIDI messages that are later sent to any compatible MIDI output port. The program accepts two arguments:
 
 ```shell
 $ node lircmidi.js <lircdSocketPath> <midiOutputPort>
