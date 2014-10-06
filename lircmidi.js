@@ -9,22 +9,8 @@
 var net = require('net');
 var midi = require('midi');
 
-// LIRC keys to MIDI notes mapping
-var KEY_MAP = {
-  'KEY_LEFT': 0x3C,
-  'KEY_OK': 0x3D,
-  'KEY_RIGHT': 0x3E,
-  'KEY_BACK': 0x3F,
-  'KEY_STOP': 0x40,
-  'KEY_OPTION': 0x41,
-  'KEY_REWIND': 0x42,
-  'KEY_PLAY': 0x43,
-  'KEY_FASTFORWARD': 0x44,
-  'KEY_PREVIOUS': 0x45,
-  'KEY_NEXT': 0x46,
-  'KEY_SEARCH': 0x47,
-  'KEY_EJECT': 0x48,
-}
+// LIRC remote/button to MIDI messages mappings
+var mappings = require('./mappings');
 
 // Parse program arguments
 var args = process.argv.splice(2);
@@ -57,15 +43,16 @@ lircClient.on('error', function (err) {
 });
 lircClient.on('data', function (data) {
   var fields = data.toString().trim().split(' ', -1);
-  var key = fields[2];
+  var button = fields[2];
+  var remote = fields[3];
 
-  // Check key and send MIDI note
-  if (key in KEY_MAP) {
-    var midiMsg = [0x90, KEY_MAP[key], 0x7F];
-    midiOutput.sendMessage(midiMsg);
-    console.log('Key: %s, MIDI message: %j', key, midiMsg);
+  // Check remote and button and send MIDI message
+  if (remote in mappings && button in mappings[remote]) {
+    var midiMessage = mappings[remote][button];
+    midiOutput.sendMessage(midiMessage);
+    console.log('Remote: %s, Button: %s, MIDI message: %j', remote, button, midiMessage);
   } else {
-    console.log('Unknown LIRC key: %s', key);
+    console.log('Unknown LIRC remote/button: %s/%s', remote, button);
   }
 });
 lircClient.on('end', function () {
