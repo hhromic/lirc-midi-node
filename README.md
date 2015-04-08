@@ -41,8 +41,8 @@ The LIRC remotes/buttons to MIDI messages mappings must be configured in a JSON 
 ```json
 {
   "REMOTE1_NAME": {
-    "KEY1_NAME": [144, 60, 127], // bytes packet for any MIDI message
-    "KEY2_NAME": [193, 5]        // the packet can be of any length
+    "KEY1_NAME": [144, 60, 127],
+    "KEY2_NAME": [193, 5]
   },
   "REMOTE2_NAME": {
     "KEY1_NAME": [145, 63, 64]
@@ -50,4 +50,4 @@ The LIRC remotes/buttons to MIDI messages mappings must be configured in a JSON 
 }
 ```
 
-All the remote and button names used in this file must be configured in the ```lircd.conf``` file of LIRC.
+All the remote and button names used in this file must be configured in the ```lircd.conf``` file of LIRC. MIDI messages are represented using variable-length arrays of bytes to send.
