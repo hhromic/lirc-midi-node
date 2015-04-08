@@ -18,7 +18,7 @@ Usage
 This simple program maps LIRC remote/buttons into MIDI messages that are later sent to any compatible MIDI output port. The program accepts two arguments:
 
 ```shell
-$ lircmidi -l <lircdSocketPath> -m <midiOutputPort> -c <mappingsConfig>
+$ lircmidi -l <lircdSocketPath> -o <midiOutputPort> -m <mappingsConfig>
 ```
 
 * ```lircdSocketPath``` is the path to the UNIX socket that LIRCd is writing to.

@@ -1,6 +1,6 @@
 {
   "name": "lirc-midi-node",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A very simple LIRC to MIDI bridge program",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
