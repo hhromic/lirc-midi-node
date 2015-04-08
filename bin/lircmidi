@@ -1,0 +1,88 @@
+#!/usr/bin/env node
+/*!
+ * A very simple LIRC to MIDI bridge program
+ *
+ * Hugo Hromic - http://github.com/hhromic
+ * Apache 2.0 License
+ */
+
+'use strict';
+
+// Required modules
+var yargs = require('yargs');
+var cjson = require('cjson');
+var log4js = require('log4js');
+var net = require('net');
+var midi = require('midi');
+
+// Loggers
+var logger = log4js.getLogger('main');
+
+// Setup and parse program arguments
+var argv = yargs
+  .usage('Usage: $0 [options]')
+  .options({
+    'l': {alias: 'lircd-socket-path', default: '/var/run/lirc/lircd',
+      describe: 'LIRCd UNIX socket path'},
+    'o': {alias: 'output-port', default: 0,
+      describe: 'MIDI output port index'},
+    'm': {alias: 'mappings', default: 'mappings.json',
+      describe: 'IR remotes to MIDI messages mappings file'}
+  })
+  .help('h')
+  .alias('h', 'help')
+  .version(function version() {
+    return require('../package').version;
+  }, 'V')
+  .alias('V', 'version')
+  .example('$0 --output-port 1', 'use MIDI output port index 1')
+  .strict().argv;
+
+// Load IR remotes/buttons to MIDI messages mappings
+try {
+  var mappings = cjson.load(argv.mappings);
+}
+catch (err) {
+  logger.error('mappings load: %s', err.toString());
+  process.exit(1);
+}
+
+// Initialise MIDI output
+var midiOutput = new midi.output();
+try {
+  midiOutput.openPort(argv.outputPort);
+  logger.info('opened MIDI output: %s', midiOutput.getPortName(argv.outputPort));
+}
+catch (err) {
+  logger.error('opening MIDI output: %s', err.toString());
+  process.exit(1);
+}
+
+// Initialise LIRC connection
+var lircClient = net.connect({path: argv.lircdSocketPath}, function () {
+  logger.info('connected to LIRCd: %s', argv.lircdSocketPath);
+});
+lircClient.on('error', function (err) {
+  logger.error('connecting to LIRCd: %s', err.toString());
+  midiOutput.closePort();
+  process.exit(1);
+});
+lircClient.on('data', function (data) {
+  var fields = data.toString().trim().split(' ', -1);
+  var button = fields[2];
+  var remote = fields[3];
+
+  // Check remote and button and send MIDI message
+  if (remote in mappings && button in mappings[remote]) {
+    var midiMessage = mappings[remote][button];
+    midiOutput.sendMessage(midiMessage);
+    logger.debug('remote: %s, button: %s, MIDI message: %s',
+      remote, button, midiMessage.toString());
+  } else {
+    logger.debug('unknown LIRC remote/button: %s/%s', remote, button);
+  }
+});
+lircClient.on('end', function () {
+  midiOutput.closePort();
+  logger.info('disconnected from LIRCd');
+});

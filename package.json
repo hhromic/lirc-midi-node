@@ -1,0 +1,32 @@
+{
+  "name": "lirc-midi-node",
+  "version": "1.0.0",
+  "description": "A very simple LIRC to MIDI bridge program",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hhromic/lirc-midi-node"
+  },
+  "keywords": [
+    "lirc",
+    "midi",
+    "bridge"
+  ],
+  "author": "Hugo Hromic",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/hhromic/lirc-midi-node/issues"
+  },
+  "homepage": "https://github.com/hhromic/lirc-midi-node",
+  "dependencies": {
+    "cjson": "^0.3.0",
+    "log4js": "^0.6.22",
+    "midi": "^0.9.2",
+    "yargs": "^3.7.0"
+  },
+  "bin": {
+    "lircmidi": "bin/lircmidi"
+  }
+}

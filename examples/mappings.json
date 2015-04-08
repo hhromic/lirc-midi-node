@@ -1,0 +1,17 @@
+{
+  "WDTV_Live_Remote": {
+    "KEY_LEFT": [144, 60, 127],
+    "KEY_OK": [144, 61, 127],
+    "KEY_RIGHT": [144, 62, 127],
+    "KEY_BACK": [144, 63, 127],
+    "KEY_STOP": [144, 64, 127],
+    "KEY_OPTION": [144, 65, 127],
+    "KEY_REWIND": [144, 66, 127],
+    "KEY_PLAY": [144, 67, 127],
+    "KEY_FASTFORWARD": [144, 68, 127],
+    "KEY_PREVIOUS": [144, 69, 127],
+    "KEY_NEXT": [144, 70, 127],
+    "KEY_SEARCH": [144, 71, 127],
+    "KEY_EJECT": [144, 72, 127]
+  }
+}

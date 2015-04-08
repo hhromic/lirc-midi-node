@@ -1,15 +1,15 @@
 lirc-midi-node
 ==============
 
-A very simple LIRC to MIDI bridge program for Node.JS
+A very simple LIRC to MIDI bridge program for Node.JS.
 
-Module Requirements
--------------------
+Installation
+------------
 
-This program requires the following modules to be installed:
+To install, use ```npm```:
 
 ```shell
-npm install midi
+$ npm install -g lirc-midi-node
 ```
 
 Usage
@@ -18,35 +18,36 @@ Usage
 This simple program maps LIRC remote/buttons into MIDI messages that are later sent to any compatible MIDI output port. The program accepts two arguments:
 
 ```shell
-$ node lircmidi.js <lircdSocketPath> <midiOutputPort>
+$ lircmidi -l <lircdSocketPath> -m <midiOutputPort> -c <mappingsConfig>
 ```
 
 * ```lircdSocketPath``` is the path to the UNIX socket that LIRCd is writing to.
 * ```midiOutputPort``` is the MIDI output port index to use for MIDI messages output.
+* ```mappingsConfig``` is the IR remotes to MIDI messages mappings configuration file in JSON format.
 
 **Example:**
 
 ```shell
-$ node lircmidi.js /var/run/lirc/lircd 0
-Opened MIDI output: Midi Through 14:0
-Connected to LIRC: /var/run/lirc/lircd
+$ lircmidi -l /var/run/lirc/lircd -o 0 -m examples/mappings.json
+[2015-04-08 02:31:14.099] [INFO] main - opened MIDI output: Midi Through 14:0
+[2015-04-08 02:31:14.297] [INFO] main - connected to LIRCd: /var/run/lirc/lircd
 ```
 
-Mappings
---------
+IR remotes to MIDI messages Mappings Configuration
+--------------------------------------------------
 
-The actual LIRC remote/buttons to MIDI messages mappings are configured in the ```mappings.js``` module file. The content for this file is very simple:
+The LIRC remotes/buttons to MIDI messages mappings must be configured in a JSON file with the following format (see the included ```examples/mappings.json``` example file):
 
-```javascript
-module.exports = {
-  'REMOTE1_NAME': {
-    'KEY1_NAME': [0x90, 0x3C, 0x7F], // bytes packet for any MIDI message
-    'KEY2_NAME': [0xC1, 0x05],       // the packet can be of any length
+```json
+{
+  "REMOTE1_NAME": {
+    "KEY1_NAME": [144, 60, 127], // bytes packet for any MIDI message
+    "KEY2_NAME": [193, 5]        // the packet can be of any length
   },
-  'REMOTE2_NAME': { // you can define multiple remotes
-    'KEY1_NAME': [0x91, 0x3F, 0x40],
-  },
-};
+  "REMOTE2_NAME": {
+    "KEY1_NAME": [145, 63, 64]
+  }
+}
 ```
 
 All the remote and button names used in this file must be configured in the ```lircd.conf``` file of LIRC.
